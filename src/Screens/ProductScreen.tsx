@@ -24,23 +24,11 @@ export const ProductScreen = () => {
     }
   }
 
-  //TODO: Make logic prettier
   useEffect(() => {
-    if (nameInput != "" || null) {
-      if (selectedProductType != "" || null) {
-        if (priceInput != "" || null) {
-          setDisabled(false);
-        }
-        else {
-          setDisabled(true);
-        }
-      }
-      else {
-        setDisabled(true);
-      }
-    }
-    else {
-      setDisabled(true);
+    if ((nameInput == "" || null) || (selectedProductType == "" || null) || (priceInput == "" || null)) {
+      setDisabled(true)
+    } else {
+      setDisabled(false);
     }
   })
 
