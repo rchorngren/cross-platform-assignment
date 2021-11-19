@@ -2,6 +2,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { StackScreen } from "../helpers/types";
+import { AntDesign } from '@expo/vector-icons';
+
 
 interface IProductListScreen extends NativeStackScreenProps<StackScreen, "ProductListScreen"> { }
 
@@ -31,8 +33,9 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
 
       <Pressable
         onPress={() => props.navigation.navigate("AddProductScreen")}
+        style={styles.fab}
       >
-        <Text>Add product</Text>
+        <AntDesign name="pluscircle" size={36} color="green" />
       </Pressable>
 
     </View>
@@ -77,5 +80,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 15,
     marginRight: 15
+  },
+  fab: {
+    position: "absolute",
+    margin: 15,
+    right: 0,
+    bottom: 0
   }
 })
