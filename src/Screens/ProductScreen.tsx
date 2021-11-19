@@ -10,7 +10,7 @@ export const ProductScreen = () => {
   const [priceInput, setPriceInput] = useState("");
   const [selectedProductType, setSelectedProductType] = useState("");
   const [disabled, setDisabled] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const productTypes = ["Integrated", "Peripheral"];
 
@@ -18,7 +18,7 @@ export const ProductScreen = () => {
     if (selectedProductType == "Integrated" && (parseInt(priceInput) < 1000) || parseInt(priceInput) > 2600) {
       setErrorMessage("Integrated products may be anywhere within the range of 1000 and 2600 dollars");
     } else if (selectedProductType == "Peripheral" && parseInt(priceInput) <= 0) {
-      setErrorMessage("price must be greater than 0");
+      setErrorMessage("Price must be greater than 0");
     } else {
       console.log('Saving data');
     }
@@ -39,7 +39,7 @@ export const ProductScreen = () => {
       <InputText defaultValue="Name" value={nameInput} isNumeric={false} onTextChange={setNameInput} />
 
       <InputText defaultValue="Price" value={priceInput} isNumeric={true} onTextChange={setPriceInput} />
-      <Text>{errorMessage}</Text>
+      <Text style={styles.errorText}>{errorMessage}</Text>
 
       <SelectDropdown
         data={productTypes}
@@ -83,13 +83,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 15
   },
+  errorText: {
+    width: 250,
+    color: "red"
+  },
   inputContainer: {
     height: 40,
     width: 250,
     borderWidth: 1,
     borderRadius: 3,
     borderColor: "black",
-    marginBottom: 15
+    marginBottom: 25
   },
   buttonView: {
     width: 250,
