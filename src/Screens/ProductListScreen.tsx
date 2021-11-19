@@ -32,7 +32,7 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
       </View>
 
       <Pressable
-        onPress={() => props.navigation.navigate("AddProductScreen")}
+        onPress={() => props.navigation.navigate("ProductScreen")}
         style={styles.fab}
       >
         <AntDesign name="pluscircle" size={36} color="green" />
