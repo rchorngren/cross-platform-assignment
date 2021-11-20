@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView, Text, StyleSheet, Pressable, View, Alert } from "react-native";
 import { InputText } from "../components/InputText";
 import { AntDesign, Foundation } from '@expo/vector-icons';
 import SelectDropdown from 'react-native-select-dropdown';
+import { Context } from "../context/Context";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackScreen } from "../helpers/types";
 
@@ -18,6 +19,8 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
 
   const productTypes = ["Integrated", "Peripheral"];
 
+  const context = useContext(Context);
+
   const saveData = () => {
     if (selectedProductType == "Integrated" && (parseInt(priceInput) < 1000) || parseInt(priceInput) > 2600) {
       setErrorMessage("Integrated products may be anywhere within the range of 1000 and 2600 dollars");
@@ -25,7 +28,8 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
       setErrorMessage("Price must be greater than 0");
     } else {
       console.log('Saving data');
-
+      { context?.setDemoText(nameInput) };
+      props.navigation.navigate("ProductListScreen");
     }
   }
 

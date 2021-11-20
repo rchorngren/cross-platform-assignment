@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { View, Text, StyleSheet, Pressable, SafeAreaView } from "react-native";
+import { Context } from "../context/Context";
 import { StackScreen } from "../helpers/types";
 import { AntDesign } from '@expo/vector-icons';
 
@@ -8,10 +9,24 @@ import { AntDesign } from '@expo/vector-icons';
 interface IProductListScreen extends NativeStackScreenProps<StackScreen, "ProductListScreen"> { }
 
 export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
-  const [savedProducts, setSavedProducts] = useState(null);
+  const [savedProducts, setSavedProducts] = useState("");
+
+  const context = useContext(Context);
+
+  // useEffect(() => {
+  //   console.log('product found: ', savedProducts);
+  // }, [savedProducts]);
+
+  useEffect(() => {
+    console.log('checking data...', context?.demoText)
+    if (context?.demoText != "") {
+      console.log('setting products');
+      setSavedProducts(context?.demoText!);
+    }
+  });
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Items</Text>
       </View>
@@ -24,7 +39,7 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
 
       <View style={styles.content}>
         {savedProducts ? (
-          null
+          <Text>{savedProducts}</Text>
         ) : (
           <Text style={styles.noItemText}>You do not have any products.{"\n"}Press the green button below to add a new one</Text>
         )}
@@ -38,13 +53,14 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
         <AntDesign name="pluscircle" size={36} color="green" />
       </Pressable>
 
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    marginTop: 30
   },
   header: {
     height: 50,
