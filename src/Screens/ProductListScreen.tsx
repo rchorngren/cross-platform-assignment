@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { View, Text, StyleSheet, Pressable, SafeAreaView } from "react-native";
+import { Context } from "../context/Context";
 import { StackScreen } from "../helpers/types";
 import { AntDesign } from '@expo/vector-icons';
 
@@ -8,10 +9,24 @@ import { AntDesign } from '@expo/vector-icons';
 interface IProductListScreen extends NativeStackScreenProps<StackScreen, "ProductListScreen"> { }
 
 export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
-  const [savedProducts, setSavedProducts] = useState(null);
+  const [savedProducts, setSavedProducts] = useState([{ productName: "Demo product 1", productType: "Integrated", productPrice: "1200" }, { productName: "Demo product 2", productType: "Integrated", productPrice: "1100" }, { productName: "Demo product 3", productType: "Peripheral", productPrice: "1000" }]);
+  // const [products, setProducts] = useState()
+
+  const context = useContext(Context);
+
+
+
+  useEffect(() => {
+    console.log('savedProducts: ', savedProducts)
+    // console.log('checking data...', context?.demoText)
+    if (context?.demoText != "") {
+      console.log('setting products');
+      // setSavedProducts(context?.demoText!);
+    }
+  });
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Items</Text>
       </View>
@@ -24,7 +39,17 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
 
       <View style={styles.content}>
         {savedProducts ? (
-          null
+          savedProducts.map((item, index) => {
+            {
+              return (
+                <View style={styles.product} key={index}>
+                  <Text>{item.productName}</Text>
+                  <Text>{item.productType}</Text>
+                  <Text>$ {item.productPrice}</Text>
+                </View>
+              )
+            }
+          })
         ) : (
           <Text style={styles.noItemText}>You do not have any products.{"\n"}Press the green button below to add a new one</Text>
         )}
@@ -38,13 +63,14 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
         <AntDesign name="pluscircle" size={36} color="green" />
       </Pressable>
 
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    marginTop: 30
   },
   header: {
     height: 50,
@@ -73,13 +99,25 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
   },
   noItemText: {
     textAlign: "center",
     fontSize: 16,
     marginLeft: 15,
     marginRight: 15
+  },
+  product: {
+    height: 40,
+    width: "90%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginTop: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    backgroundColor: "gray"
   },
   fab: {
     position: "absolute",

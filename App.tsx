@@ -5,24 +5,30 @@ import { StyleSheet } from 'react-native';
 import { StackScreen } from './src/helpers/types';
 import { AddProductScreen } from './src/Screens/AddProductScreen';
 import { ProductListScreen } from './src/Screens/ProductListScreen';
+import { ContextProvider } from './src/context/Context';
 
 const Stack = createNativeStackNavigator<StackScreen>();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="ProductListScreen"
-          component={ProductListScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="AddProductScreen"
-          component={AddProductScreen}
-          options={{ headerShown: true }}
-        />
-      </Stack.Navigator>
+      <ContextProvider>
+        <Stack.Navigator>
+
+          <Stack.Screen
+            name="ProductListScreen"
+            component={ProductListScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="AddProductScreen"
+            component={AddProductScreen}
+            options={{ headerShown: false }}
+          />
+
+        </Stack.Navigator>
+      </ContextProvider>
     </NavigationContainer>
   );
 }
