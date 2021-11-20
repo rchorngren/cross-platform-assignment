@@ -8,8 +8,7 @@ interface IProducts {
 
 interface IContext {
   productArray: IProducts[];
-  // setProductArray: (array: []) => void;
-  setProductArray: any;
+  setProductArray: (products: IProducts[]) => void;
 }
 
 export const Context = React.createContext<IContext | undefined>(
@@ -17,7 +16,7 @@ export const Context = React.createContext<IContext | undefined>(
 )
 
 export const ContextProvider: React.FC = (props) => {
-  const [productArray, setProductArray] = useState<any>([]);
+  const [productArray, setProductArray] = useState<IProducts[]>([]);
 
   return (
     <Context.Provider

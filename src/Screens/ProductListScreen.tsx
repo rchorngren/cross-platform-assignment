@@ -19,17 +19,23 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
     props.navigation.navigate("EditProductScreen", { productName, productPrice, productType });
   }
 
-  useEffect(() => {
-    if (savedProducts!.length > 0) {
-      console.log('save', savedProducts);
-    }
+  // const loadData = () => {
+  //   console.log('running loadData')
+  //   setSavedProducts(context?.productArray);
+  // }
 
-  }, [savedProducts])
+  // useEffect(() => {
+  //   // setSavedProducts(context?.productArray);
+  //   // console.log('savedProducts: ', savedProducts)
+  //   console.log('Screen loaded');
+  //   loadData()
+  // }, []);
 
-  useEffect(() => {
-    console.log('savedProducts: ', savedProducts)
-    setSavedProducts(context?.productArray);
-  });
+
+  // useEffect(() => {
+  //   setSavedProducts([{ productName: "Demo product 1", productType: "Integrated", productPrice: "1200" }, { productName: "Demo product 2", productType: "Integrated", productPrice: "1100" }, { productName: "Demo product 3", productType: "Peripheral", productPrice: "1000" }]);
+  // }, [])
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,8 +56,8 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
           <FlatList
             data={savedProducts}
             renderItem={({ item, index }) =>
-              // <Pressable style={styles.product} key={index} onPress={() => navigateToEditScreen(item.productName, item.productPrice, item.productType)}>
-              <Pressable style={styles.product} key={index} onPress={() => console.log('index: ', index)}>
+              <Pressable style={styles.product} key={index} onPress={() => navigateToEditScreen(item.productName, item.productPrice, item.productType)}>
+                {/* <Pressable style={styles.product} key={index} onPress={() => console.log('index: ', index)}> */}
                 <Text>{item.productName}</Text>
                 <Text>{item.productType}</Text>
                 <Text>$ {item.productPrice}</Text>

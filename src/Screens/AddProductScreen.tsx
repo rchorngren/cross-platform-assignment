@@ -19,11 +19,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
   const [disabled, setDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const [productArray, setProductArray] = useState(context?.productArray);
-
   const productTypes = ["Integrated", "Peripheral"];
-
-
 
   const saveData = () => {
     if (productType == "Integrated" && (parseInt(productPrice) < 1000) || parseInt(productPrice) > 2600) {
@@ -32,12 +28,15 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
       setErrorMessage("Price must be greater than 0");
     } else {
 
-      var newData = { productName, productType, productPrice }
+      let currentData = context?.productArray;
+      let newData = { productName, productType, productPrice }
+      currentData?.push(newData);
 
-      // context?.setProductArray(productArray?.push(newData));
-      context?.setProductArray([newData]);
+      context?.setProductArray(currentData!);
 
-      props.navigation.navigate("ProductListScreen");
+      console.log('productArray: ', context?.productArray);
+      // props.navigation.navigate("ProductListScreen");
+      props.navigation.goBack();
     }
   }
 
@@ -59,7 +58,6 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
   }
 
   useEffect(() => {
-    console.log('productArray:', productArray)
     if ((productName == "" || null) || (productPrice == "" || null)) {
       setDisabled(true)
     } else {
