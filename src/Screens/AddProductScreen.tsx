@@ -11,24 +11,32 @@ interface IAddProductScreen extends NativeStackScreenProps<StackScreen, "AddProd
 }
 
 export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
-  const [nameInput, setNameInput] = useState("");
-  const [priceInput, setPriceInput] = useState("");
-  const [selectedProductType, setSelectedProductType] = useState("");
+  const context = useContext(Context);
+
+  const [productName, setProductName] = useState("");
+  const [productPrice, setProductPrice] = useState("");
+  const [productType, setProductType] = useState<"Peripheral" | "Integrated">("Peripheral")
   const [disabled, setDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const [productArray, setProductArray] = useState(context?.productArray);
+
   const productTypes = ["Integrated", "Peripheral"];
 
-  const context = useContext(Context);
+
 
   const saveData = () => {
-    if (selectedProductType == "Integrated" && (parseInt(priceInput) < 1000) || parseInt(priceInput) > 2600) {
+    if (productType == "Integrated" && (parseInt(productPrice) < 1000) || parseInt(productPrice) > 2600) {
       setErrorMessage("Integrated products may be anywhere within the range of 1000 and 2600 dollars");
-    } else if (selectedProductType == "Peripheral" && parseInt(priceInput) <= 0) {
+    } else if (productType == "Peripheral" && parseInt(productPrice) <= 0) {
       setErrorMessage("Price must be greater than 0");
     } else {
-      console.log('Saving data');
-      { context?.setDemoText(nameInput) };
+
+      var newData = { productName, productType, productPrice }
+
+      // context?.setProductArray(productArray?.push(newData));
+      context?.setProductArray([newData]);
+
       props.navigation.navigate("ProductListScreen");
     }
   }
@@ -51,7 +59,8 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
   }
 
   useEffect(() => {
-    if ((nameInput == "" || null) || (selectedProductType == "" || null) || (priceInput == "" || null)) {
+    console.log('productArray:', productArray)
+    if ((productName == "" || null) || (productPrice == "" || null)) {
       setDisabled(true)
     } else {
       setDisabled(false);
@@ -62,14 +71,14 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
     <SafeAreaView style={styles.container}>
       <Text style={styles.headerText}>Create New Product</Text>
 
-      <InputText defaultValue="Name" value={nameInput} isNumeric={false} onTextChange={setNameInput} />
+      <InputText defaultValue="Name" value={productName} isNumeric={false} onTextChange={setProductName} />
 
-      <InputText defaultValue="Price" value={priceInput} isNumeric={true} onTextChange={setPriceInput} />
+      <InputText defaultValue="Price" value={productPrice} isNumeric={true} onTextChange={setProductPrice} />
       <Text style={styles.errorText}>{errorMessage}</Text>
 
       <SelectDropdown
         data={productTypes}
-        onSelect={(selectedItem) => { setSelectedProductType(selectedItem) }}
+        onSelect={(selectedItem) => { setProductType(selectedItem) }}
         buttonTextAfterSelection={(selectedItem) => { return selectedItem }}
         rowTextForSelection={(item) => { return item }}
         buttonStyle={styles.inputContainer}

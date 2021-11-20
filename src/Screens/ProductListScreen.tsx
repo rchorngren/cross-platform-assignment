@@ -9,21 +9,26 @@ import { AntDesign } from '@expo/vector-icons';
 interface IProductListScreen extends NativeStackScreenProps<StackScreen, "ProductListScreen"> { }
 
 export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
-  const [savedProducts, setSavedProducts] = useState([{ productName: "Demo product 1", productType: "Integrated", productPrice: "1200" }, { productName: "Demo product 2", productType: "Integrated", productPrice: "1100" }, { productName: "Demo product 3", productType: "Peripheral", productPrice: "1000" }]);
-
   const context = useContext(Context);
+  // const [savedProducts, setSavedProducts] = useState([{ productName: "Demo product 1", productType: "Integrated", productPrice: "1200" }, { productName: "Demo product 2", productType: "Integrated", productPrice: "1100" }, { productName: "Demo product 3", productType: "Peripheral", productPrice: "1000" }]);
+  const [savedProducts, setSavedProducts] = useState(context?.productArray);
+
+
 
   const navigateToEditScreen = (productName: string, productPrice: string, productType: string) => {
     props.navigation.navigate("EditProductScreen", { productName, productPrice, productType });
   }
 
   useEffect(() => {
-    console.log('savedProducts: ', savedProducts)
-    // console.log('checking data...', context?.demoText)
-    if (context?.demoText != "") {
-      console.log('setting products');
-      // setSavedProducts(context?.demoText!);
+    if (savedProducts!.length > 0) {
+      console.log('save', savedProducts);
     }
+
+  }, [savedProducts])
+
+  useEffect(() => {
+    console.log('savedProducts: ', savedProducts)
+    setSavedProducts(context?.productArray);
   });
 
   return (
@@ -40,12 +45,13 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
 
       <View style={styles.content}>
 
-        {savedProducts.length > 0 ? (
+        {savedProducts!.length > 0 ? (
 
           <FlatList
             data={savedProducts}
             renderItem={({ item, index }) =>
-              <Pressable style={styles.product} key={index} onPress={() => navigateToEditScreen(item.productName, item.productPrice, item.productType)}>
+              // <Pressable style={styles.product} key={index} onPress={() => navigateToEditScreen(item.productName, item.productPrice, item.productType)}>
+              <Pressable style={styles.product} key={index} onPress={() => console.log('index: ', index)}>
                 <Text>{item.productName}</Text>
                 <Text>{item.productType}</Text>
                 <Text>$ {item.productPrice}</Text>

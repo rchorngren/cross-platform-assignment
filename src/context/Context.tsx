@@ -1,29 +1,29 @@
 import React, { useState } from "react";
 
+interface IProducts {
+  productName: string;
+  productType: "Integrated" | "Peripheral";
+  productPrice: string;
+}
+
 interface IContext {
-  demoText: string;
-  setDemoText: (text: string) => void;
-
-  // productArray: ???
-  // setProductArray: ???
-
+  productArray: IProducts[];
+  // setProductArray: (array: []) => void;
+  setProductArray: any;
 }
 
 export const Context = React.createContext<IContext | undefined>(
   undefined
-);
+)
 
 export const ContextProvider: React.FC = (props) => {
-  const [demoText, setDemoText] = useState("");
-  // const [products, setProducts] = useState({});
+  const [productArray, setProductArray] = useState<any>([]);
 
   return (
     <Context.Provider
       value={{
-        demoText: demoText,
-        setDemoText: setDemoText,
-        // products: products,
-        // setProducts: setProducts
+        productArray: productArray,
+        setProductArray: setProductArray
       }}
     >
       {props.children}
