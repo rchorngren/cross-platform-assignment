@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, Text, StyleSheet, Pressable, View } from "react-native";
+import { SafeAreaView, Text, StyleSheet, Pressable, View, Alert } from "react-native";
 import { InputText } from "../components/InputText";
 import { AntDesign, Foundation } from '@expo/vector-icons';
+import SelectDropdown from 'react-native-select-dropdown';
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackScreen } from "../helpers/types";
 
-import SelectDropdown from 'react-native-select-dropdown'
+interface IAddProductScreen extends NativeStackScreenProps<StackScreen, "AddProductScreen"> {
+}
 
-export const ProductScreen = () => {
+export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
   const [nameInput, setNameInput] = useState("");
   const [priceInput, setPriceInput] = useState("");
   const [selectedProductType, setSelectedProductType] = useState("");
@@ -21,7 +25,25 @@ export const ProductScreen = () => {
       setErrorMessage("Price must be greater than 0");
     } else {
       console.log('Saving data');
+
     }
+  }
+
+  const undoAndGoBack = () => {
+    Alert.alert(
+      "Undo changes?",
+      "This will remove any data yet not saved",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Ok",
+          onPress: () => props.navigation.goBack()
+        }
+      ]
+    );
   }
 
   useEffect(() => {
@@ -59,7 +81,10 @@ export const ProductScreen = () => {
           <AntDesign name="download" size={20} color="white" />
         </Pressable>
 
-        <Pressable style={styles.cancelButton}>
+        <Pressable
+          style={styles.cancelButton}
+          onPress={undoAndGoBack}
+        >
           <Text>Cancel</Text>
           <Foundation name="prohibited" size={30} color="white" />
         </Pressable>

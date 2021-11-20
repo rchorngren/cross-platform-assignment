@@ -3,27 +3,32 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { StackScreen } from './src/helpers/types';
-import { ProductScreen } from './src/Screens/ProductScreen';
+import { AddProductScreen } from './src/Screens/AddProductScreen';
 import { ProductListScreen } from './src/Screens/ProductListScreen';
+import { ContextProvider } from './src/context/Context';
 
 const Stack = createNativeStackNavigator<StackScreen>();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="ProductScreen"
-          component={ProductScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ProductListScreen"
-          component={ProductListScreen}
-          options={{ headerShown: false }}
-        />
+      <ContextProvider>
+        <Stack.Navigator>
 
-      </Stack.Navigator>
+          <Stack.Screen
+            name="ProductListScreen"
+            component={ProductListScreen}
+            options={{ headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="AddProductScreen"
+            component={AddProductScreen}
+            options={{ headerShown: false }}
+          />
+
+        </Stack.Navigator>
+      </ContextProvider>
     </NavigationContainer>
   );
 }
