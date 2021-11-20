@@ -9,19 +9,19 @@ import { AntDesign } from '@expo/vector-icons';
 interface IProductListScreen extends NativeStackScreenProps<StackScreen, "ProductListScreen"> { }
 
 export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
-  const [savedProducts, setSavedProducts] = useState("");
+  const [savedProducts, setSavedProducts] = useState([{ productName: "Demo product 1", productType: "Integrated", productPrice: "1200" }, { productName: "Demo product 2", productType: "Integrated", productPrice: "1100" }, { productName: "Demo product 3", productType: "Peripheral", productPrice: "1000" }]);
+  // const [products, setProducts] = useState()
 
   const context = useContext(Context);
 
-  // useEffect(() => {
-  //   console.log('product found: ', savedProducts);
-  // }, [savedProducts]);
+
 
   useEffect(() => {
-    console.log('checking data...', context?.demoText)
+    console.log('savedProducts: ', savedProducts)
+    // console.log('checking data...', context?.demoText)
     if (context?.demoText != "") {
       console.log('setting products');
-      setSavedProducts(context?.demoText!);
+      // setSavedProducts(context?.demoText!);
     }
   });
 
@@ -39,7 +39,17 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
 
       <View style={styles.content}>
         {savedProducts ? (
-          <Text>{savedProducts}</Text>
+          savedProducts.map((item, index) => {
+            {
+              return (
+                <View style={styles.product} key={index}>
+                  <Text>{item.productName}</Text>
+                  <Text>{item.productType}</Text>
+                  <Text>$ {item.productPrice}</Text>
+                </View>
+              )
+            }
+          })
         ) : (
           <Text style={styles.noItemText}>You do not have any products.{"\n"}Press the green button below to add a new one</Text>
         )}
@@ -89,13 +99,25 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
   },
   noItemText: {
     textAlign: "center",
     fontSize: 16,
     marginLeft: 15,
     marginRight: 15
+  },
+  product: {
+    height: 40,
+    width: "90%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginTop: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    backgroundColor: "gray"
   },
   fab: {
     position: "absolute",
