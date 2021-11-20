@@ -10,7 +10,6 @@ interface IInputText {
 
 export const InputText: React.FC<IInputText> = (props) => {
 
-
   return (
     <View>
 

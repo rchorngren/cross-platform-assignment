@@ -10,11 +10,12 @@ interface IProductListScreen extends NativeStackScreenProps<StackScreen, "Produc
 
 export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
   const [savedProducts, setSavedProducts] = useState([{ productName: "Demo product 1", productType: "Integrated", productPrice: "1200" }, { productName: "Demo product 2", productType: "Integrated", productPrice: "1100" }, { productName: "Demo product 3", productType: "Peripheral", productPrice: "1000" }]);
-  // const [products, setProducts] = useState()
 
   const context = useContext(Context);
 
-
+  const navigateToEditScreen = (productName: string, productPrice: string, productType: string) => {
+    props.navigation.navigate("EditProductScreen", { productName, productPrice, productType });
+  }
 
   useEffect(() => {
     console.log('savedProducts: ', savedProducts)
@@ -38,20 +39,22 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
       </View>
 
       <View style={styles.content}>
-        {savedProducts ? (
+        {savedProducts.length > 0 ? (
           savedProducts.map((item, index) => {
             {
               return (
-                <View style={styles.product} key={index}>
+                <Pressable style={styles.product} key={index} onPress={() => navigateToEditScreen(item.productName, item.productPrice, item.productType)}>
                   <Text>{item.productName}</Text>
                   <Text>{item.productType}</Text>
                   <Text>$ {item.productPrice}</Text>
-                </View>
+                </Pressable>
               )
             }
           })
         ) : (
-          <Text style={styles.noItemText}>You do not have any products.{"\n"}Press the green button below to add a new one</Text>
+          <View style={styles.noItemView}>
+            <Text style={styles.noItemText}>You do not have any products.{"\n"}Press the green button below to add a new one</Text>
+          </View>
         )}
 
       </View>
@@ -99,6 +102,10 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: "center",
+  },
+  noItemView: {
+    flex: 1,
+    justifyContent: "center",
   },
   noItemText: {
     textAlign: "center",
