@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, Pressable, SafeAreaView, FlatList } from "react-native";
 import { Context } from "../context/Context";
 import { StackScreen } from "../helpers/types";
 import { AntDesign } from '@expo/vector-icons';
@@ -39,18 +39,20 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
       </View>
 
       <View style={styles.content}>
+
         {savedProducts.length > 0 ? (
-          savedProducts.map((item, index) => {
-            {
-              return (
-                <Pressable style={styles.product} key={index} onPress={() => navigateToEditScreen(item.productName, item.productPrice, item.productType)}>
-                  <Text>{item.productName}</Text>
-                  <Text>{item.productType}</Text>
-                  <Text>$ {item.productPrice}</Text>
-                </Pressable>
-              )
+
+          <FlatList
+            data={savedProducts}
+            renderItem={({ item, index }) =>
+              <Pressable style={styles.product} key={index} onPress={() => navigateToEditScreen(item.productName, item.productPrice, item.productType)}>
+                <Text>{item.productName}</Text>
+                <Text>{item.productType}</Text>
+                <Text>$ {item.productPrice}</Text>
+              </Pressable>
             }
-          })
+          />
+
         ) : (
           <View style={styles.noItemView}>
             <Text style={styles.noItemText}>You do not have any products.{"\n"}Press the green button below to add a new one</Text>
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   subHeaderText: {
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   content: {
     flex: 1,
@@ -113,9 +115,13 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginRight: 15
   },
+  flatListItem: {
+    width: 250,
+    alignItems: "center"
+  },
   product: {
     height: 40,
-    width: "90%",
+    width: 300,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
