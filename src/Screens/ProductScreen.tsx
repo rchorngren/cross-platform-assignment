@@ -79,16 +79,22 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
   }
 
   const saveData = () => {
+    const reg = new RegExp(/^\d+(\.\d{1,2})?$/);
+
     if (productType == "Integrated" && (parseInt(productPrice) < 1000) || parseInt(productPrice) > 2600) {
       setErrorMessage("Integrated products may be anywhere within the range of 1000 and 2600 dollars");
     } else if (productType == "Peripheral" && parseInt(productPrice) <= 0) {
       setErrorMessage("Price must be greater than 0");
     } else {
+      if (reg.test(productPrice)) {
+        if (productIndex != null) {
+          saveEditedItem();
+        } else {
+          saveNewItem();
+        }
 
-      if (productIndex != null) {
-        saveEditedItem();
       } else {
-        saveNewItem();
+        setErrorMessage("Please make sure the price is using only numbers");
       }
     }
   }
@@ -96,9 +102,8 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
   const deleteData = () => {
     let currentArray = context?.productArray;
     currentArray?.splice(productIndex!, 1);
-    context?.setProductArray(currentArray!)
-    props.navigation.goBack()
-
+    context?.setProductArray(currentArray!);
+    props.navigation.goBack();
   }
 
   const undoAndGoBack = () => {
