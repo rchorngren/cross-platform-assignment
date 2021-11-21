@@ -60,9 +60,13 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
     let newData = { productName, productType, productPrice }
 
     let duplicateFound = false
-    currentData!.forEach(element => {
+    currentData!.forEach((element, index) => {
       if (element.productName === newData.productName) {
-        duplicateFound = true;
+        if (index != productIndex) {
+          duplicateFound = true;
+        }
+
+
       }
     });
 
@@ -91,33 +95,13 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
     }
   }
 
-  function removeItem<T>(arr: Array<T>, value: T): Array<T> {
-    const index = arr.indexOf(value);
-    if (index > -1) {
-      arr.splice(index, 1);
-    }
-    return arr;
-  }
-
   const deleteData = () => {
-    let data = context?.productArray;
-    const itemToRemove = productIndex;
-
-    // const result = data?.filter(name => name.productName != itemToRemove)
-
-    // // console.log('result: ', result)
-
-    // context?.setProductArray(result);
-
-
-
-    context?.setProductArray(data?.splice(itemToRemove!, 1)!);
-
+    let currentArray = context?.productArray;
+    currentArray?.splice(productIndex!, 1);
+    context?.setProductArray(currentArray!)
     props.navigation.goBack()
 
   }
-
-
 
   const undoAndGoBack = () => {
     Alert.alert(
@@ -137,14 +121,12 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
   }
 
   useEffect(() => {
-    if ((productName == "" || null) || (productPrice == "" || null)) {
+    if ((productName == "" || null) || (productType == "" || null) || (productPrice == "" || null)) {
       setDisabled(true)
     } else {
       setDisabled(false);
     }
   })
-
-  console.log('index: ', productIndex)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -166,7 +148,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
 
       <View style={styles.buttonView}>
         <Pressable
-          style={disabled ? [styles.saveButton, styles.disabled] : styles.saveButton}
+          style={disabled ? [styles.buttonStyle, styles.saveButton, styles.disabled] : [styles.buttonStyle, styles.saveButton]}
           onPress={!disabled ? () => saveData() : null}
         >
           <Text>Save</Text>
@@ -174,23 +156,21 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
         </Pressable>
 
         <Pressable
-          style={styles.cancelButton}
+          style={[styles.buttonStyle, styles.cancelButton]}
           onPress={undoAndGoBack}
         >
           <Text>Cancel</Text>
           <Foundation name="prohibited" size={30} color="white" />
         </Pressable>
-
-
       </View>
 
       {productIndex != null ? (
         <Pressable
-          style={styles.deleteButton}
+          style={[styles.buttonStyle, styles.deleteButton]}
           onPress={deleteData}
         >
           <Text>Delete</Text>
-          <Foundation name="prohibited" size={30} color="red" />
+          <Foundation name="trash" size={30} color="white" />
         </Pressable>
       ) : null}
 
@@ -227,7 +207,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between"
   },
-  saveButton: {
+  buttonStyle: {
     height: 45,
     width: 115,
     flexDirection: "row",
@@ -235,26 +215,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderRadius: 15,
+  },
+  saveButton: {
     backgroundColor: "green"
   },
   cancelButton: {
-    height: 45,
-    width: 115,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    borderWidth: 1,
-    borderRadius: 15,
     backgroundColor: "lightgray"
   },
   deleteButton: {
-    height: 45,
     width: 250,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    borderWidth: 1,
-    borderRadius: 15,
     marginTop: 15,
     backgroundColor: "red"
   },

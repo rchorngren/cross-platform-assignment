@@ -31,8 +31,6 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
     const navListener = props.navigation.addListener('focus', () => {
       setSavedProducts(context?.productArray);
 
-      console.log('savedProducts: ', savedProducts);
-
       if (savedProducts!.length > 0) {
         setItemsToRender(
           <FlatList
@@ -46,6 +44,13 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
             }
             keyExtractor={(item, index) => index.toString()}
           />
+        )
+
+      } else {
+        setItemsToRender(
+          <View style={styles.noItemView}>
+            <Text style={styles.noItemText}>You do not have any products.{"\n"}Press the green button below to add a new one</Text>
+          </View>
         )
       }
     });
