@@ -10,31 +10,42 @@ interface IProductListScreen extends NativeStackScreenProps<StackScreen, "Produc
 
 export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
   const context = useContext(Context);
-  // const [savedProducts, setSavedProducts] = useState([{ productName: "Demo product 1", productType: "Integrated", productPrice: "1200" }, { productName: "Demo product 2", productType: "Integrated", productPrice: "1100" }, { productName: "Demo product 3", productType: "Peripheral", productPrice: "1000" }]);
   const [savedProducts, setSavedProducts] = useState(context?.productArray);
 
-
+  const [itemsToRender, setItemsToRender] = useState(
+    <View style={styles.noItemView}>
+      <Text style={styles.noItemText}>You do not have any products.{"\n"}Press the green button below to add a new one</Text>
+    </View>
+  );
 
   const navigateToEditScreen = (productName: string, productPrice: string, productType: string) => {
     props.navigation.navigate("EditProductScreen", { productName, productPrice, productType });
   }
 
-  // const loadData = () => {
-  //   console.log('running loadData')
-  //   setSavedProducts(context?.productArray);
-  // }
+  useEffect(() => {
+    const navListener = props.navigation.addListener('focus', () => {
+      setSavedProducts(context?.productArray);
 
-  // useEffect(() => {
-  //   // setSavedProducts(context?.productArray);
-  //   // console.log('savedProducts: ', savedProducts)
-  //   console.log('Screen loaded');
-  //   loadData()
-  // }, []);
+      if (savedProducts!.length > 0) {
+        setItemsToRender(
+          <FlatList
+            data={savedProducts}
+            renderItem={({ item, index }) =>
+              <Pressable style={styles.product} key={index} onPress={() => navigateToEditScreen(item.productName, item.productPrice, item.productType)}>
+                <Text>{item.productName}</Text>
+                <Text>{item.productType}</Text>
+                <Text>$ {item.productPrice}</Text>
+              </Pressable>
+            }
+            keyExtractor={(item, index) => index.toString()}
+          />
+        )
+      }
 
 
-  // useEffect(() => {
-  //   setSavedProducts([{ productName: "Demo product 1", productType: "Integrated", productPrice: "1200" }, { productName: "Demo product 2", productType: "Integrated", productPrice: "1100" }, { productName: "Demo product 3", productType: "Peripheral", productPrice: "1000" }]);
-  // }, [])
+    });
+    return navListener;
+  }, [props.navigation]);
 
 
   return (
@@ -51,25 +62,7 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
 
       <View style={styles.content}>
 
-        {savedProducts!.length > 0 ? (
-
-          <FlatList
-            data={savedProducts}
-            renderItem={({ item, index }) =>
-              <Pressable style={styles.product} key={index} onPress={() => navigateToEditScreen(item.productName, item.productPrice, item.productType)}>
-                {/* <Pressable style={styles.product} key={index} onPress={() => console.log('index: ', index)}> */}
-                <Text>{item.productName}</Text>
-                <Text>{item.productType}</Text>
-                <Text>$ {item.productPrice}</Text>
-              </Pressable>
-            }
-          />
-
-        ) : (
-          <View style={styles.noItemView}>
-            <Text style={styles.noItemText}>You do not have any products.{"\n"}Press the green button below to add a new one</Text>
-          </View>
-        )}
+        {itemsToRender}
 
       </View>
 
