@@ -6,7 +6,7 @@ export const english = {
   [tokens.screens.productListScreen.SubHeaderType]: "Type",
   [tokens.screens.productListScreen.SubHeaderPrice]: "Price",
   [tokens.screens.productListScreen.NoProductsTextOne]: "You do now have any products.",
-  [tokens.screens.productListScreen.NoProductsTextOne]: "Press the green button below to add a new one",
+  [tokens.screens.productListScreen.NoProductsTextTwo]: "Press the green button below to add a new one",
 
   [tokens.screens.productScreen.HeaderTextNew]: "Create New Product",
   [tokens.screens.productScreen.HeaderTextEdit]: "Edit Product",
