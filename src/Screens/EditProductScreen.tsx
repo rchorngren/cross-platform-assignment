@@ -15,7 +15,7 @@ export const EditProductScreen: React.FC<IEditProductScreen> = (props) => {
 
   const [nameInput, setNameInput] = useState<string>(params.productName);
   const [priceInput, setPriceInput] = useState(params.productPrice);
-  const [selectedProductType, setSelectedProductType] = useState(params.productPrice);
+  const [selectedProductType, setSelectedProductType] = useState(params.productType);
   const [disabled, setDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 interface IProducts {
   productName: string;
-  productType: "Integrated" | "Peripheral";
+  productType: string | "Integrated" | "Peripheral";
   productPrice: string;
 }
 

@@ -18,20 +18,27 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
     </View>
   );
 
-  const navigateToEditScreen = (productName: string, productPrice: string, productType: string) => {
-    props.navigation.navigate("EditProductScreen", { productName, productPrice, productType });
+  const navigateToEditScreen = (productName: string, productPrice: string, productType: string, index: number) => {
+    props.navigation.navigate("AddProductScreen", { productName, productPrice, productType, index });
+  }
+
+  const navigateToAddScreen = () => {
+    const emptyObject = { productName: "", productPrice: "", productType: "", index: null }
+    props.navigation.navigate("AddProductScreen", emptyObject)
   }
 
   useEffect(() => {
     const navListener = props.navigation.addListener('focus', () => {
       setSavedProducts(context?.productArray);
 
+      console.log('savedProducts: ', savedProducts);
+
       if (savedProducts!.length > 0) {
         setItemsToRender(
           <FlatList
             data={savedProducts}
             renderItem={({ item, index }) =>
-              <Pressable style={styles.product} key={index} onPress={() => navigateToEditScreen(item.productName, item.productPrice, item.productType)}>
+              <Pressable style={styles.product} key={index} onPress={() => navigateToEditScreen(item.productName, item.productPrice, item.productType, index)}>
                 <Text>{item.productName}</Text>
                 <Text>{item.productType}</Text>
                 <Text>$ {item.productPrice}</Text>
@@ -45,7 +52,6 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
 
     return navListener;
   }, [props.navigation]);
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -64,7 +70,7 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
       </View>
 
       <Pressable
-        onPress={() => props.navigation.navigate("AddProductScreen")}
+        onPress={() => navigateToAddScreen()}
         style={styles.fab}
       >
         <AntDesign name="pluscircle" size={36} color="green" />

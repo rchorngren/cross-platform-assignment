@@ -1,5 +1,5 @@
 export type StackScreen = {
   ProductListScreen: undefined,
-  AddProductScreen: undefined,
+  AddProductScreen: { productName: string, productType: string, productPrice: string, index: number | null }
   EditProductScreen: { productName: string, productType: string, productPrice: string }
 }
