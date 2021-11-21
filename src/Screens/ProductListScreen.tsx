@@ -4,6 +4,8 @@ import { View, Text, StyleSheet, Pressable, SafeAreaView, FlatList } from "react
 import { Context } from "../context/Context";
 import { StackScreen } from "../helpers/types";
 import { AntDesign } from '@expo/vector-icons';
+import { translate } from "../helpers/translation/translation";
+import { tokens } from "../helpers/translation/appStructure";
 
 
 interface IProductListScreen extends NativeStackScreenProps<StackScreen, "ProductListScreen"> { }
@@ -14,7 +16,7 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
 
   const [itemsToRender, setItemsToRender] = useState(
     <View style={styles.noItemView}>
-      <Text style={styles.noItemText}>You do not have any products.{"\n"}Press the green button below to add a new one</Text>
+      <Text style={styles.noItemText}>{translate(tokens.screens.productListScreen.NoProductsTextOne)}{"\n"}{translate(tokens.screens.productListScreen.NoProductsTextTwo)}</Text>
     </View>
   );
 
@@ -49,7 +51,7 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
       } else {
         setItemsToRender(
           <View style={styles.noItemView}>
-            <Text style={styles.noItemText}>You do not have any products.{"\n"}Press the green button below to add a new one</Text>
+            <Text style={styles.noItemText}>{translate(tokens.screens.productListScreen.NoProductsTextOne)}{"\n"}{translate(tokens.screens.productListScreen.NoProductsTextTwo)}</Text>
           </View>
         )
       }
@@ -61,13 +63,13 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Items</Text>
+        <Text style={styles.headerText}>{translate(tokens.screens.productListScreen.HeaderText)}</Text>
       </View>
 
       <View style={styles.subHeader}>
-        <Text style={styles.subHeaderText}>Name</Text>
-        <Text style={styles.subHeaderText}>Type</Text>
-        <Text style={styles.subHeaderText}>Price</Text>
+        <Text style={styles.subHeaderText}>{translate(tokens.screens.productListScreen.SubHeaderName)}</Text>
+        <Text style={styles.subHeaderText}>{translate(tokens.screens.productListScreen.SubHeaderType)}</Text>
+        <Text style={styles.subHeaderText}>{translate(tokens.screens.productListScreen.SubHeaderPrice)}</Text>
       </View>
 
       <View style={styles.content}>

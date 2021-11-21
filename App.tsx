@@ -6,10 +6,13 @@ import { StackScreen } from './src/helpers/types';
 import { AddProductScreen } from './src/Screens/ProductScreen';
 import { ProductListScreen } from './src/Screens/ProductListScreen';
 import { ContextProvider } from './src/context/Context';
+import { setI18nConfig } from './src/helpers/translation/translation';
 
 const Stack = createNativeStackNavigator<StackScreen>();
 
 export default function App() {
+  setI18nConfig();
+
   return (
     <NavigationContainer>
       <ContextProvider>
