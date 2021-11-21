@@ -41,9 +41,8 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
           />
         )
       }
-
-
     });
+
     return navListener;
   }, [props.navigation]);
 
@@ -61,9 +60,7 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
       </View>
 
       <View style={styles.content}>
-
         {itemsToRender}
-
       </View>
 
       <Pressable

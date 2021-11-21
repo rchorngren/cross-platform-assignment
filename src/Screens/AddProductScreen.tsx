@@ -22,6 +22,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
   const productTypes = ["Integrated", "Peripheral"];
 
   const saveData = () => {
+    console.log('saveData')
     if (productType == "Integrated" && (parseInt(productPrice) < 1000) || parseInt(productPrice) > 2600) {
       setErrorMessage("Integrated products may be anywhere within the range of 1000 and 2600 dollars");
     } else if (productType == "Peripheral" && parseInt(productPrice) <= 0) {
@@ -30,13 +31,31 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
 
       let currentData = context?.productArray;
       let newData = { productName, productType, productPrice }
-      currentData?.push(newData);
 
-      context?.setProductArray(currentData!);
+      //if currentData is empty, always save the first item
+      if (currentData?.length === 0) {
+        currentData?.push(newData);
+        context?.setProductArray(currentData!);
+        props.navigation.navigate("ProductListScreen");
 
-      console.log('productArray: ', context?.productArray);
-      // props.navigation.navigate("ProductListScreen");
-      props.navigation.goBack();
+        //if there at least one item, check for duplicates
+      } else {
+        let duplicateFound = false
+        currentData!.forEach(element => {
+          if (element.productName === newData.productName) {
+            duplicateFound = true;
+          }
+        });
+
+        if (duplicateFound) {
+          setErrorMessage("This item already exists - please select another name for it");
+
+        } else {
+          currentData?.push(newData);
+          context?.setProductArray(currentData!);
+          props.navigation.navigate("ProductListScreen");
+        }
+      }
     }
   }
 
