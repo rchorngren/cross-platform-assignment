@@ -3,10 +3,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { StackScreen } from './src/helpers/types';
-import { AddProductScreen } from './src/Screens/AddProductScreen';
+import { AddProductScreen } from './src/Screens/ProductScreen';
 import { ProductListScreen } from './src/Screens/ProductListScreen';
 import { ContextProvider } from './src/context/Context';
-import { EditProductScreen } from './src/Screens/EditProductScreen';
 
 const Stack = createNativeStackNavigator<StackScreen>();
 
@@ -25,12 +24,6 @@ export default function App() {
           <Stack.Screen
             name="AddProductScreen"
             component={AddProductScreen}
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="EditProductScreen"
-            component={EditProductScreen}
             options={{ headerShown: false }}
           />
 

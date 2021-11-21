@@ -65,8 +65,6 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
         if (index != productIndex) {
           duplicateFound = true;
         }
-
-
       }
     });
 
