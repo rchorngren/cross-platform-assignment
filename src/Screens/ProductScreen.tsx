@@ -6,6 +6,8 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { Context } from "../context/Context";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackScreen } from "../helpers/types";
+import { translate } from "../helpers/translation/translation";
+import { tokens } from "../helpers/translation/appStructure";
 
 interface IAddProductScreen extends NativeStackScreenProps<StackScreen, "AddProductScreen"> {
 }
@@ -21,7 +23,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
   const [disabled, setDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const productTypes = ["Integrated", "Peripheral"];
+  const productTypes = [translate(tokens.screens.productScreen.PickerIntegrated), translate(tokens.screens.productScreen.PickerPeripheral)];
 
   const saveNewItem = () => {
     let currentData = context?.productArray;
@@ -43,7 +45,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
       });
 
       if (duplicateFound) {
-        setErrorMessage("This item already exists - please select another name for it");
+        setErrorMessage(translate(tokens.screens.productScreen.ErrorDuplicate));
 
       } else {
         currentData?.push(newData);
@@ -54,7 +56,6 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
   }
 
   const saveEditedItem = () => {
-    console.log('editing item with index ', productIndex)
     let index = productIndex
     let currentData = context?.productArray;
     let newData = { productName, productType, productPrice }
@@ -69,7 +70,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
     });
 
     if (duplicateFound) {
-      setErrorMessage("This item already exists - please select another name for it");
+      setErrorMessage(translate(tokens.screens.productScreen.ErrorDuplicate));
 
     } else {
       currentData![index!] = newData;
@@ -81,10 +82,10 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
   const saveData = () => {
     const reg = new RegExp(/^\d+(\.\d{1,2})?$/);
 
-    if (productType == "Integrated" && (parseInt(productPrice) < 1000) || parseInt(productPrice) > 2600) {
-      setErrorMessage("Integrated products may be anywhere within the range of 1000 and 2600 dollars");
-    } else if (productType == "Peripheral" && parseInt(productPrice) <= 0) {
-      setErrorMessage("Price must be greater than 0");
+    if (productType == translate(tokens.screens.productScreen.PickerIntegrated) && (parseInt(productPrice) < 1000) || parseInt(productPrice) > 2600) {
+      setErrorMessage(translate(tokens.screens.productScreen.ErrorIntegrated));
+    } else if (productType == translate(tokens.screens.productScreen.PickerPeripheral) && parseInt(productPrice) <= 0) {
+      setErrorMessage(translate(tokens.screens.productScreen.ErrorPeripheral));
     } else {
       if (reg.test(productPrice)) {
         if (productIndex != null) {
@@ -94,7 +95,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
         }
 
       } else {
-        setErrorMessage("Please make sure the price is using only numbers");
+        setErrorMessage(translate(tokens.screens.productScreen.ErrorPricetype));
       }
     }
   }
@@ -108,15 +109,15 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
 
   const undoAndGoBack = () => {
     Alert.alert(
-      "Undo changes?",
-      "This will remove any data yet not saved",
+      translate(tokens.screens.productScreen.AlertHeader),
+      translate(tokens.screens.productScreen.AlertMessage),
       [
         {
-          text: "Cancel",
+          text: translate(tokens.screens.productScreen.AlertCancel),
           style: "cancel"
         },
         {
-          text: "Ok",
+          text: translate(tokens.screens.productScreen.AlertConfirm),
           onPress: () => props.navigation.goBack()
         }
       ]
@@ -133,11 +134,12 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.headerText}>Create New Product</Text>
+      <Text style={styles.headerText}>{productIndex != null ? translate(tokens.screens.productScreen.HeaderTextEdit) : translate(tokens.screens.productScreen.HeaderTextNew)}</Text>
 
-      <InputText defaultValue="Name" value={productName} isNumeric={false} onTextChange={setProductName} />
+      <InputText defaultValue={translate(tokens.screens.productScreen.InputName)} value={productName} isNumeric={false} onTextChange={setProductName} />
 
-      <InputText defaultValue="Price" value={productPrice} isNumeric={true} onTextChange={setProductPrice} />
+      <InputText defaultValue={translate(tokens.screens.productScreen.InputPrice)} value={productPrice} isNumeric={true} onTextChange={setProductPrice} />
+
       <Text style={styles.errorText}>{errorMessage}</Text>
 
       <SelectDropdown
@@ -146,7 +148,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
         buttonTextAfterSelection={(selectedItem) => { return selectedItem }}
         rowTextForSelection={(item) => { return item }}
         buttonStyle={styles.inputContainer}
-        defaultButtonText={productType === "" ? "Product Type" : productType}
+        defaultButtonText={productType === "" ? translate(tokens.screens.productScreen.PickerType) : productType}
       />
 
       <View style={styles.buttonView}>
@@ -154,7 +156,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
           style={disabled ? [styles.buttonStyle, styles.saveButton, styles.disabled] : [styles.buttonStyle, styles.saveButton]}
           onPress={!disabled ? () => saveData() : null}
         >
-          <Text>Save</Text>
+          <Text>{translate(tokens.screens.productScreen.ButtonSave)}</Text>
           <AntDesign name="download" size={20} color="white" />
         </Pressable>
 
@@ -162,7 +164,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
           style={[styles.buttonStyle, styles.cancelButton]}
           onPress={undoAndGoBack}
         >
-          <Text>Cancel</Text>
+          <Text>{translate(tokens.screens.productScreen.ButtonCancel)}</Text>
           <Foundation name="prohibited" size={30} color="white" />
         </Pressable>
       </View>
@@ -172,7 +174,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
           style={[styles.buttonStyle, styles.deleteButton]}
           onPress={deleteData}
         >
-          <Text>Delete</Text>
+          <Text>{translate(tokens.screens.productScreen.ButtonDelete)}</Text>
           <Foundation name="trash" size={30} color="white" />
         </Pressable>
       ) : null}
