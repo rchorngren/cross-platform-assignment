@@ -10,6 +10,7 @@ interface ILoginScreen
 export const LoginScreen: React.FC<ILoginScreen> = (props) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const loginUser = () => {
     const auth = getAuth();
@@ -23,6 +24,7 @@ export const LoginScreen: React.FC<ILoginScreen> = (props) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        setErrorMessage(errorMessage)
       });
   };
 
@@ -45,6 +47,7 @@ export const LoginScreen: React.FC<ILoginScreen> = (props) => {
       <Pressable onPress={() => loginUser()} style={styles.buttonStyle}>
         <Text>Login</Text>
       </Pressable>
+      {errorMessage ? <Text>{errorMessage}</Text> : null}
     </View>
   );
 };
