@@ -3,11 +3,12 @@ import { SafeAreaView, Text, StyleSheet, Pressable, View, Alert } from "react-na
 import { InputText } from "../components/InputText";
 import { AntDesign, Foundation } from '@expo/vector-icons';
 import SelectDropdown from 'react-native-select-dropdown';
-import { Context } from "../context/Context";
+import { Context, IProducts } from "../context/Context";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackScreen } from "../helpers/types";
 import { translate } from "../helpers/translation/translation";
 import { tokens } from "../helpers/translation/appStructure";
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 interface IAddProductScreen extends NativeStackScreenProps<StackScreen, "AddProductScreen"> {
 }
@@ -24,6 +25,16 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const productTypes = [translate(tokens.screens.productScreen.PickerIntegrated), translate(tokens.screens.productScreen.PickerPeripheral)];
+  
+  const storeData = async(value: IProducts[]) => {
+    try {
+      let itemToSet = JSON.stringify(value)
+      await AsyncStorage.setItem("storedData", itemToSet)
+      props.navigation.navigate("ProductListScreen")
+    } catch (error) {
+      console.log("There was an error ", error);
+    }
+  } 
 
   const saveNewItem = () => {
     let currentData = context?.productArray;
@@ -33,7 +44,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
     if (currentData?.length === 0) {
       currentData?.push(newData);
       context?.setProductArray(currentData!);
-      props.navigation.navigate("ProductListScreen");
+      storeData(currentData)
 
       //if there at least one item, check for duplicates
     } else {
@@ -50,7 +61,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
       } else {
         currentData?.push(newData);
         context?.setProductArray(currentData!);
-        props.navigation.navigate("ProductListScreen");
+        storeData(currentData!)
       }
     }
   }
@@ -75,7 +86,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
     } else {
       currentData![index!] = newData;
       context?.setProductArray(currentData!);
-      props.navigation.navigate("ProductListScreen");
+      storeData(currentData!)
     }
   }
 
@@ -104,7 +115,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
     let currentArray = context?.productArray;
     currentArray?.splice(productIndex!, 1);
     context?.setProductArray(currentArray!);
-    props.navigation.goBack();
+    storeData(currentArray!)
   }
 
   const undoAndGoBack = () => {
