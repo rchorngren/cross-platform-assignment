@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, Image } from "react-native";
 import { InputText } from "../components/InputText";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { StackScreen } from "../helpers/types";
@@ -24,8 +24,21 @@ export const LoginScreen: React.FC<ILoginScreen> = (props) => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        setErrorMessage(errorMessage)
+        setErrorMessage(errorMessage);
       });
+  };
+
+  const gif = () => {
+    return (
+      <View>
+        <Image
+          style={{ width: 300, height: 220 }}
+          source={{
+            uri: "https://media0.giphy.com/media/RKMm7X3HGKZMuoZlMF/giphy.gif?cid=790b76114adfa09c663f5d9769765db4b5fd65f054049697&rid=giphy.gif&ct=g",
+          }}
+        />
+      </View>
+    );
   };
 
   return (
@@ -47,7 +60,12 @@ export const LoginScreen: React.FC<ILoginScreen> = (props) => {
       <Pressable onPress={() => loginUser()} style={styles.buttonStyle}>
         <Text>Login</Text>
       </Pressable>
-      {errorMessage ? <Text>{errorMessage}</Text> : null}
+      {errorMessage ? (
+        <View style={styles.errorContainer}>
+          <Text>{errorMessage}</Text> 
+         <View>{gif()}</View>
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -69,4 +87,9 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: "green",
   },
+  errorContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+  }
 });
