@@ -62,9 +62,9 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <Text style={styles.headerText}>{translate(tokens.screens.productListScreen.HeaderText)}</Text>
-      </View>
+      </View> */}
 
       <View style={styles.subHeader}>
         <Text style={styles.subHeaderText}>{translate(tokens.screens.productListScreen.SubHeaderName)}</Text>
@@ -90,7 +90,7 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 30
+    // marginTop: 30
   },
   header: {
     height: 50,

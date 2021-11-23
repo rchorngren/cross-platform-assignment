@@ -6,10 +6,13 @@ import { StackScreen } from './src/helpers/types';
 import { AddProductScreen } from './src/Screens/ProductScreen';
 import { ProductListScreen } from './src/Screens/ProductListScreen';
 import { ContextProvider } from './src/context/Context';
-import { setI18nConfig } from './src/helpers/translation/translation';
+import { setI18nConfig, translate } from './src/helpers/translation/translation';
+import { tokens } from './src/helpers/translation/appStructure';
+import { LoginScreen } from './src/Screens/LoginScreen';
+import { fbInit } from './src/services/firebaseService';
 
 const Stack = createNativeStackNavigator<StackScreen>();
-
+fbInit();
 export default function App() {
   setI18nConfig();
 
@@ -18,10 +21,16 @@ export default function App() {
       <ContextProvider>
         <Stack.Navigator>
 
+        <Stack.Screen
+            name="LoginScreen"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+
           <Stack.Screen
             name="ProductListScreen"
             component={ProductListScreen}
-            options={{ headerShown: false }}
+            options={{ headerShown: true, title: translate(tokens.screens.productListScreen.HeaderText), headerTitleStyle: { color: "white" }, headerStyle: { backgroundColor: "green" }, headerBackVisible: false }}
           />
 
           <Stack.Screen

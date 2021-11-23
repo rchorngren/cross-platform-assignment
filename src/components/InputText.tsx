@@ -6,6 +6,7 @@ interface IInputText {
   value: string;
   isNumeric: boolean;
   onTextChange?: (text: string) => void;
+  secureTextEntry?: boolean;
 }
 
 export const InputText: React.FC<IInputText> = (props) => {
@@ -19,6 +20,7 @@ export const InputText: React.FC<IInputText> = (props) => {
         value={props.value}
         placeholder={props.defaultValue}
         keyboardType={props.isNumeric ? "numeric" : "default"}
+        secureTextEntry={props.secureTextEntry}
       />
 
     </View>
