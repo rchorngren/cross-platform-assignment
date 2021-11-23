@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View, Image } from "react-native";
 import { InputText } from "../components/InputText";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { StackScreen } from "../helpers/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Context } from "../context/Context";
+import { getData } from "./hooks/getData";
 
 interface ILoginScreen
   extends NativeStackScreenProps<StackScreen, "LoginScreen"> {}
@@ -13,20 +12,7 @@ export const LoginScreen: React.FC<ILoginScreen> = (props) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
-  const context = useContext(Context)
-
-  const getData = async() => {
-    try {
-      const value = await AsyncStorage.getItem("storedData")
-      if (value !== null) {
-        let storedItems = JSON.parse(value)
-        context?.setProductArray(storedItems)
-      }
-    } catch (error) {
-      console.log("There was an error while retrieving data ", error)
-    }
-  } 
+  const {loadData} = getData();
 
   const loginUser = () => {
     const auth = getAuth();
@@ -58,7 +44,7 @@ export const LoginScreen: React.FC<ILoginScreen> = (props) => {
   };
 
   useEffect(() => {
-    getData()
+    loadData()
   }, [])
 
   return (
