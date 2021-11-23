@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-interface IProducts {
+export interface IProducts {
   productName: string;
   productType: string | "Integrated" | "Peripheral";
   productPrice: string;
