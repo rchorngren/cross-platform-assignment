@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Pressable,
   SafeAreaView,
+  BackHandler,
 } from "react-native";
 import { Context } from "../context/Context";
 import { StackScreen } from "../helpers/types";
@@ -92,7 +93,9 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
                 style={[styles.product, styles.delete]}
                 onPress={() => deletedData(data.index, storingData)}
               >
-                <Text>Delete</Text>
+                <Text>
+                  {translate(tokens.screens.productScreen.ButtonDelete)}
+                </Text>
               </Pressable>
             )}
             rightOpenValue={-75}
@@ -143,9 +146,14 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
             renderHiddenItem={(data, rowMap) => (
               <Pressable
                 style={[styles.product, styles.delete]}
-                onPress={() => {deletedData(data.index, storingData); rowMap[0].closeRow()}}
+                onPress={() => {
+                  deletedData(data.index, storingData);
+                  rowMap[0].closeRow();
+                }}
               >
-                <Text>{translate(tokens.screens.productScreen.ButtonDelete)}</Text>
+                <Text>
+                  {translate(tokens.screens.productScreen.ButtonDelete)}
+                </Text>
               </Pressable>
             )}
             rightOpenValue={-75}
@@ -166,12 +174,16 @@ export const ProductListScreen: React.FC<IProductListScreen> = (props) => {
     }
   }, [updateList]);
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => true
+    );
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.header}>
-        <Text style={styles.headerText}>{translate(tokens.screens.productListScreen.HeaderText)}</Text>
-      </View> */}
-
       <View style={styles.subHeader}>
         <Text style={styles.subHeaderText}>
           {translate(tokens.screens.productListScreen.SubHeaderName)}
@@ -223,7 +235,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    width: "100%"
+    width: "100%",
   },
   noItemView: {
     flex: 1,

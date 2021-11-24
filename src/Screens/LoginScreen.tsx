@@ -5,18 +5,20 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { StackScreen } from "../helpers/types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { getData } from "./hooks/getData";
+import { translate } from "../helpers/translation/translation";
+import { tokens } from "../helpers/translation/appStructure";
 
 interface ILoginScreen
   extends NativeStackScreenProps<StackScreen, "LoginScreen"> {}
 export const LoginScreen: React.FC<ILoginScreen> = (props) => {
-  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const {loadData} = getData();
 
   const loginUser = () => {
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, userName, password)
+    signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
@@ -51,20 +53,20 @@ export const LoginScreen: React.FC<ILoginScreen> = (props) => {
     <View style={styles.container}>
       <Text></Text>
       <InputText
-        defaultValue={"Username"}
-        value={userName}
+        defaultValue={translate(tokens.screens.loginScreen.InputEmail)}
+        value={email}
         isNumeric={false}
-        onTextChange={setUserName}
+        onTextChange={setEmail}
       />
       <InputText
-        defaultValue={"Password"}
+        defaultValue={translate(tokens.screens.loginScreen.InputPassword)}
         value={password}
         isNumeric={false}
         onTextChange={setPassword}
         secureTextEntry={true}
       />
       <Pressable onPress={() => loginUser()} style={styles.buttonStyle}>
-        <Text>Login</Text>
+        <Text>{translate(tokens.screens.loginScreen.ButtonLogin)}</Text>
       </Pressable>
       {errorMessage ? (
         <View style={styles.errorContainer}>

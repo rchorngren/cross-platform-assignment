@@ -1,6 +1,10 @@
 import { tokens } from "./appStructure";
 
 export const swedish = {
+  [tokens.screens.loginScreen.InputEmail]: "E-post",
+  [tokens.screens.loginScreen.InputPassword]: "Lösenord",
+  [tokens.screens.loginScreen.ButtonLogin]: "Logga in",
+
   [tokens.screens.productListScreen.HeaderText]: "Föremål",
   [tokens.screens.productListScreen.SubHeaderName]: "Namn",
   [tokens.screens.productListScreen.SubHeaderType]: "Typ",

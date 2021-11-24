@@ -1,6 +1,10 @@
 import { tokens } from "./appStructure";
 
 export const english = {
+  [tokens.screens.loginScreen.InputEmail]: "Email",
+  [tokens.screens.loginScreen.InputPassword]: "Password",
+  [tokens.screens.loginScreen.ButtonLogin]: "Login",
+
   [tokens.screens.productListScreen.HeaderText]: "Items",
   [tokens.screens.productListScreen.SubHeaderName]: "Name",
   [tokens.screens.productListScreen.SubHeaderType]: "Type",
@@ -23,7 +27,7 @@ export const english = {
   [tokens.screens.productScreen.ErrorPeripheral]: "Price must be $1 or greater",
   [tokens.screens.productScreen.ErrorPricetype]: "Make sure you are using numbers to specify price",
   [tokens.screens.productScreen.AlertHeader]: "Undo changes?",
-  [tokens.screens.productScreen.AlertMessage]: "This will remove any data yet not saved",
+  [tokens.screens.productScreen.AlertMessage]: "This will remove any data not yet saved",
   [tokens.screens.productScreen.AlertCancel]: "Cancel",
   [tokens.screens.productScreen.AlertConfirm]: "Ok",
 }

@@ -1,3 +1,9 @@
+enum LoginScreen {
+  InputEmail = "loginscreen-input-email",
+  InputPassword = "loginscreen-input-password",
+  ButtonLogin = "loginscreen-button-login",
+}
+
 enum ProductListScreen {
   HeaderText = "productlistscreen-header-text",
   SubHeaderName = "productlistscreen-subheader-name",
@@ -32,6 +38,7 @@ enum ProductScreen {
 
 export const tokens = {
   screens: {
+    loginScreen: LoginScreen,
     productListScreen: ProductListScreen,
     productScreen: ProductScreen,
   },

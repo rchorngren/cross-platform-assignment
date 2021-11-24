@@ -6,6 +6,7 @@ import {
   Pressable,
   View,
   Alert,
+  BackHandler,
 } from "react-native";
 import { InputText } from "../components/InputText";
 import { AntDesign, Foundation } from "@expo/vector-icons";
@@ -136,6 +137,20 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
       ]
     );
   };
+
+  useEffect(() => {
+    const backAction = () => {
+      undoAndGoBack();
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   useEffect(() => {
     if (
