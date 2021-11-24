@@ -97,10 +97,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
     const reg = new RegExp(/^\d+(\.\d{1,2})?$/);
 
     if (
-      (productType ==
-        translate(tokens.screens.productScreen.PickerIntegrated) &&
-        parseInt(productPrice) < 1000) ||
-      parseInt(productPrice) > 2600
+      productType == translate(tokens.screens.productScreen.PickerIntegrated) && (parseInt(productPrice) < 1000 || parseInt(productPrice) > 2600)
     ) {
       setErrorMessage(translate(tokens.screens.productScreen.ErrorIntegrated));
     } else if (
