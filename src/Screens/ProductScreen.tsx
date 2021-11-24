@@ -16,6 +16,7 @@ import { StackScreen } from "../helpers/types";
 import { translate } from "../helpers/translation/translation";
 import { tokens } from "../helpers/translation/appStructure";
 import { storeData } from "./hooks/storeData";
+import { deleteData } from "./hooks/deleteData";
 
 interface IAddProductScreen
   extends NativeStackScreenProps<StackScreen, "AddProductScreen"> {}
@@ -37,6 +38,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
   ];
 
   const { storingData, navigateReady } = storeData();
+  const { deletedData } = deleteData();
 
   const saveNewItem = () => {
     let currentData = context?.productArray;
@@ -116,13 +118,6 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
         setErrorMessage(translate(tokens.screens.productScreen.ErrorPricetype));
       }
     }
-  };
-
-  const deleteData = () => {
-    let currentArray = context?.productArray;
-    currentArray?.splice(productIndex!, 1);
-    context?.setProductArray(currentArray!);
-    storingData(currentArray!);
   };
 
   const undoAndGoBack = () => {
@@ -231,7 +226,7 @@ export const AddProductScreen: React.FC<IAddProductScreen> = (props) => {
       {productIndex != null ? (
         <Pressable
           style={[styles.buttonStyle, styles.deleteButton]}
-          onPress={deleteData}
+          onPress={() => deletedData(productIndex, storingData)}
         >
           <Text>{translate(tokens.screens.productScreen.ButtonDelete)}</Text>
           <Foundation name="trash" size={30} color="white" />
