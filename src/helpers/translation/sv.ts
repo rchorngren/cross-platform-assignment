@@ -4,6 +4,8 @@ export const swedish = {
   [tokens.screens.loginScreen.InputEmail]: "E-post",
   [tokens.screens.loginScreen.InputPassword]: "Lösenord",
   [tokens.screens.loginScreen.ButtonLogin]: "Logga in",
+  [tokens.screens.loginScreen.ErrorRequired]: "Fältet kan inte vara tomt.",
+  [tokens.screens.loginScreen.ErrorEmail]: "Måste vara en giltig e-post.",
 
   [tokens.screens.productListScreen.HeaderText]: "Föremål",
   [tokens.screens.productListScreen.SubHeaderName]: "Namn",

@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View, Image } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+} from "react-native";
 import { InputText } from "../components/InputText";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { StackScreen } from "../helpers/types";
@@ -7,18 +13,22 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { getData } from "./hooks/getData";
 import { translate } from "../helpers/translation/translation";
 import { tokens } from "../helpers/translation/appStructure";
+import { Controller, useForm } from "react-hook-form";
+
+type FormData = {
+  email: string;
+  password: string;
+};
 
 interface ILoginScreen
   extends NativeStackScreenProps<StackScreen, "LoginScreen"> {}
 export const LoginScreen: React.FC<ILoginScreen> = (props) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const {loadData} = getData();
+  const [errorMessage, setErrorMessage] = useState(false);
+  const { loadData } = getData();
 
-  const loginUser = () => {
+  const loginUser = (data: FormData) => {
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
@@ -26,15 +36,14 @@ export const LoginScreen: React.FC<ILoginScreen> = (props) => {
         // ...
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setErrorMessage(errorMessage);
+        console.log("Error while logging in: ", error);
+        setErrorMessage(true);
       });
   };
 
   const gif = () => {
     return (
-      <View>
+      <View style={styles.errorContainer}>
         <Image
           style={{ width: 300, height: 220 }}
           source={{
@@ -46,34 +55,63 @@ export const LoginScreen: React.FC<ILoginScreen> = (props) => {
   };
 
   useEffect(() => {
-    loadData()
-  }, [])
+    loadData();
+  }, []);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
+  const onSubmit = handleSubmit((data) => loginUser(data));
 
   return (
     <View style={styles.container}>
-      <Text></Text>
-      <InputText
-        defaultValue={translate(tokens.screens.loginScreen.InputEmail)}
-        value={email}
-        isNumeric={false}
-        onTextChange={setEmail}
+      <Controller
+        control={control}
+        rules={{
+          required: translate(tokens.screens.loginScreen.ErrorRequired),
+          pattern: {
+            value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+            message: translate(tokens.screens.loginScreen.ErrorEmail),
+          },
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <InputText 
+          defaultValue={translate(tokens.screens.loginScreen.InputEmail)} 
+          value={value} 
+          isNumeric={false} 
+          onTextChange={onChange}
+          onBlur={onBlur}         
+          />
+        )}
+        name="email"
       />
-      <InputText
-        defaultValue={translate(tokens.screens.loginScreen.InputPassword)}
-        value={password}
-        isNumeric={false}
-        onTextChange={setPassword}
-        secureTextEntry={true}
+      {errors.email && <Text style={styles.errorContainer}>{errors.email.message}</Text>}
+
+      <Controller
+        control={control}
+        rules={{
+          required: translate(tokens.screens.loginScreen.ErrorRequired),
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <InputText 
+          defaultValue={translate(tokens.screens.loginScreen.InputPassword)} 
+          value={value} 
+          isNumeric={false} 
+          onTextChange={onChange}
+          onBlur={onBlur} 
+          secureTextEntry={true}        
+          />
+        )}
+        name="password"
       />
-      <Pressable onPress={() => loginUser()} style={styles.buttonStyle}>
+      {errors.password && <Text style={styles.errorContainer}>{errors.password.message}</Text>}
+
+      <Pressable onPress={onSubmit} style={styles.buttonStyle}>
         <Text>{translate(tokens.screens.loginScreen.ButtonLogin)}</Text>
       </Pressable>
-      {errorMessage ? (
-        <View style={styles.errorContainer}>
-          <Text>{errorMessage}</Text> 
-         <View>{gif()}</View>
-        </View>
-      ) : null}
+      {errorMessage && gif()}
     </View>
   );
 };
@@ -99,5 +137,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
-  }
+  },
+  inputContainer: {
+    height: 40,
+    width: 250,
+    borderWidth: 1,
+    borderRadius: 3,
+    borderColor: "black",
+    paddingLeft: 5,
+    marginVertical: 15,
+  },
 });
