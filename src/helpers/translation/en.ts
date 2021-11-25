@@ -4,6 +4,8 @@ export const english = {
   [tokens.screens.loginScreen.InputEmail]: "Email",
   [tokens.screens.loginScreen.InputPassword]: "Password",
   [tokens.screens.loginScreen.ButtonLogin]: "Login",
+  [tokens.screens.loginScreen.ErrorRequired]: "Field must not be empty.",
+  [tokens.screens.loginScreen.ErrorEmail]: "Must be a valid email.",
 
   [tokens.screens.productListScreen.HeaderText]: "Items",
   [tokens.screens.productListScreen.SubHeaderName]: "Name",

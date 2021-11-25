@@ -2,6 +2,8 @@ enum LoginScreen {
   InputEmail = "loginscreen-input-email",
   InputPassword = "loginscreen-input-password",
   ButtonLogin = "loginscreen-button-login",
+  ErrorRequired = "loginscreen-error-required",
+  ErrorEmail = "loginscreen-error-email",
 }
 
 enum ProductListScreen {

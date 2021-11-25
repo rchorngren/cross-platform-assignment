@@ -1,11 +1,12 @@
 import React from "react"
-import { View, StyleSheet, TextInput } from "react-native"
+import { View, StyleSheet, TextInput, NativeSyntheticEvent, TextInputFocusEventData } from "react-native"
 
 interface IInputText {
   defaultValue: string;
   value: string;
   isNumeric: boolean;
   onTextChange?: (text: string) => void;
+  onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
   secureTextEntry?: boolean;
 }
 
@@ -17,6 +18,7 @@ export const InputText: React.FC<IInputText> = (props) => {
       <TextInput
         style={styles.inputContainer}
         onChangeText={props.onTextChange}
+        onBlur={props.onBlur}
         value={props.value}
         placeholder={props.defaultValue}
         keyboardType={props.isNumeric ? "numeric" : "default"}
